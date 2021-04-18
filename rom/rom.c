@@ -63,23 +63,6 @@ void draw_line(int x, int y, int x2, int y2, unsigned short color)
   }
 }
 
-//int main()
-//{
-//    int x,y;
-//    short c;
-    
-    
-//    c = 0;
-//    while (1) {
-//            vram[x] = c;
-//        for ( y = 0; y < 240; y++ ) {
-//            c = c + 3;
-//            for ( x = 0; x < 320; x++) {
-//                put_pixel(x,y,c);
-//            }
-//        }
-//    }
-
 int main() 
 {
   int i;
