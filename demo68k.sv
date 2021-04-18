@@ -1,6 +1,6 @@
 ///----------------------------------------------------------------------------
 //
-//  Arcade: Mr Do! Copyright 2021 Darren Olafson
+//  Copyright 2021 Darren Olafson
 //
 //  MiSTer Copyright (C) 2017 Sorgelig
 //
