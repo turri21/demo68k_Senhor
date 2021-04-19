@@ -231,7 +231,7 @@ reg [5:0] clk7_count;
 
 always @ (posedge clk_sys ) begin
     clk7_count <= clk7_count + 1;
-    clk_7M <= clk7_count[2];
+    clk_7M <= clk7_count[1];
 end
 
 // 8 dip switches of 8 bits
