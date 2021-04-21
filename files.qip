@@ -7,5 +7,5 @@ set_global_assignment -name VERILOG_FILE rtl/ram.v
 set_global_assignment -name VERILOG_FILE rtl/fx68kAlu.v
 set_global_assignment -name VERILOG_FILE rtl/fx68k.v
 set_global_assignment -name QIP_FILE rtl/vram.qip
-set_global_assignment -name QIP_FILE rtl/ram8kx16.qip
+set_global_assignment -name QIP_FILE rtl/ram8kx8.qip
 set_global_assignment -name QIP_FILE rtl/rom8kx16.qip

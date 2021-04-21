@@ -471,7 +471,7 @@ fx68k fx68k (
     .oHALTEDn(cpu_halted_n),
 
     // input
-    .VPAn(vpa_n),         
+    .VPAn(0),         
     .DTACKn(dtack_n), 
     .BERRn(berr_n), 
     .BRn(cpu_br_n),  
@@ -486,13 +486,12 @@ fx68k fx68k (
     .eab(cpu_a[23:1])
 );
 
-wire rom_csn =  !(cpu_a[23:18]==6'b000000) | cpu_as_n;
+// if the CPU address strobe pin (cpu_as_n) is high then memory is not being accessed 
+
+// Note: there are mirrored addresses
+wire rom_csn =  !(cpu_a[23:18]==6'b000000) | cpu_as_n;  // 0-$1ffff 
 wire ram_csn =  !(cpu_a[23:18]==6'b000100) | cpu_as_n;  // $10_00_00
 wire vram_csn = !(cpu_a[23:18]==6'b100000) | cpu_as_n;  // $80_00_00
-
-
-assign vpa_n =  !(cpu_a[23:18]==6'b011000) | cpu_as_n;
-
 
 vram vram_inst (
 	.inclock ( clk_10M ),
@@ -516,20 +515,35 @@ assign cpu_din = !rom_csn ? rom_do :
                  !ram_csn ? ram_do :
                  16'd0;
 
+// The rom is not writable so individual byte writes are not required
+                 
 rom8kx16 rom8kx16_inst (
 	.clock ( clk_10M ),
 	.address ( cpu_a[13:1] ),  
-//	.data (  ),
+//	.data (  ),  // can't write to rom
 	.wren ( 0 ),
 	.q ( rom_do ) 
 	);
 
-ram8kx16 ram8kx16_inst (
+// The 68k controls memory byte access with LDS and UDS pins
+// when the pin is low the corresponding byte is being accessed 
+// during single byte writes, high and low data lines will have 
+// the same values but one of them is not written.
+
+ram8kx8 ram8kx8_L (
 	.clock ( clk_10M ),
 	.address ( cpu_a[13:1] ),
-	.data ( cpu_dout ),
-	.wren ( !cpu_rw & !ram_csn),
-	.q ( ram_do )
+	.data ( cpu_dout[7:0] ),
+	.wren ( !cpu_rw & !ram_csn & !cpu_lds_n),
+	.q ( ram_do[7:0] )
+	);
+
+ram8kx8 ram8kx8_H (
+	.clock ( clk_10M ),
+	.address ( cpu_a[13:1] ),
+	.data ( cpu_dout[15:8] ),
+	.wren ( !cpu_rw & !ram_csn & !cpu_uds_n),
+	.q ( ram_do[15:8] )
 	);
 
 
