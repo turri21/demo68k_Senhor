@@ -1,3 +1,8 @@
+-=(demo68k_Senhor notes)=-
+
+Tested: Working Video 720p, 1080p.
+
+___
 # demo68k
 MiSTer use of 68000 cpu core and targetting C code.  
 
